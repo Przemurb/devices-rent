@@ -16,7 +16,7 @@ public class Device {
     @ManyToOne
     private Category category;
 
-    public Device(String name, String description, int quantity, Category categoryId) {
+    public Device(String name, String description, int quantity, Category category) {
         this.name = name;
         this.description = description;
         this.quantity = quantity;

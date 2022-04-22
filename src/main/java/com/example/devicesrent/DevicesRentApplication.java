@@ -1,10 +1,10 @@
 package com.example.devicesrent;
 
 
-import com.example.devicesrent.dao.DeviceDao;
 import com.example.devicesrent.data.Category;
 import com.example.devicesrent.data.Customer;
 import com.example.devicesrent.data.Device;
+import com.example.devicesrent.repository.DeviceRepository;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -14,7 +14,7 @@ public class DevicesRentApplication {
 
     public static void main(String[] args) {
         ConfigurableApplicationContext context = SpringApplication.run(DevicesRentApplication.class, args);
-        DeviceDao deviceDao = context.getBean(DeviceDao.class);
+        DeviceRepository deviceRepository = context.getBean(DeviceRepository.class);
 
         Device device1 = new Device("Wiertarka udarowa", "Wiertarka udarowa 3000W", 3, 75.00);
 
@@ -29,10 +29,7 @@ public class DevicesRentApplication {
         device1.setCategory(category1);
         device1.addCustomer(customer1);
 
-        deviceDao.save(device1);
-
-
-
+        deviceRepository.save(device1);
     }
 
 }

@@ -19,7 +19,7 @@ public class Category {
     private String name;
     private String description;
     @OneToMany (mappedBy = "category")
-    private final Set<Device> devices = new HashSet<>();
+    private Set<Device> devices = new HashSet<>();
 
     public Category(String name, String description) {
         this.name = name;

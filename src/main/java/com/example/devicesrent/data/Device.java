@@ -3,6 +3,7 @@ package com.example.devicesrent.data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.engine.internal.Cascade;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -20,19 +21,22 @@ public class Device {
     private String description;
     private int quantity;
     private double price;
-    @ManyToOne
+    @ManyToOne (cascade = CascadeType.PERSIST)
     private Category category;
-    @ManyToMany(mappedBy = "rentDevices")
-    private final List<Customer>customers = new ArrayList<>();
+    @ManyToMany(mappedBy = "rentDevices", cascade = CascadeType.PERSIST)
+    private List<Customer>customers = new ArrayList<>();
 
-    public Device(String name, String description, double price, Category category) {
+    public Device(String name, String description, int quantity, double price) {
         this.name = name;
         this.description = description;
+        this.quantity = quantity;
         this.price = price;
-        this.category = category;
     }
+
     public void addCustomer (Customer customer) {
         customers.add(customer);
+        customer.getRentDevices().add(this); //dodaje wypożyczone narzędzie do bazy!
+
     }
 
     @Override

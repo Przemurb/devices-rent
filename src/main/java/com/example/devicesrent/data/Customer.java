@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -20,7 +21,14 @@ public class Customer {
     private int pesel;
     private String documentNumber;
     @ManyToMany
-    private List<Device> rentDevices;
+    private List<Device> rentDevices = new ArrayList<>();
+
+    public Customer(String firstName, String lastName, int pesel, String documentNumber) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.pesel = pesel;
+        this.documentNumber = documentNumber;
+    }
 
     @Override
     public String toString() {

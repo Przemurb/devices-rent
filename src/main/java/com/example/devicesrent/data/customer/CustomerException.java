@@ -1,4 +1,4 @@
-package com.example.devicesrent.services;
+package com.example.devicesrent.data.customer;
 
 public class CustomerException extends Throwable {
     public CustomerException (String e) {

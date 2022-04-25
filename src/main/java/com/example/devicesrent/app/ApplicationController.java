@@ -1,5 +1,8 @@
-package com.example.devicesrent.services;
+package com.example.devicesrent.app;
 
+import com.example.devicesrent.data.category.CategoryService;
+import com.example.devicesrent.data.customer.CustomerService;
+import com.example.devicesrent.data.device.DeviceService;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 

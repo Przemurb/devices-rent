@@ -1,4 +1,4 @@
-package com.example.devicesrent.services;
+package com.example.devicesrent.data.category;
 
 public class CategoryException extends Throwable {
     public CategoryException(String e) {

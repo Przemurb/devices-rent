@@ -1,9 +1,9 @@
-package com.example.devicesrent.services;
+package com.example.devicesrent.data.device;
 
-import com.example.devicesrent.data.Category;
-import com.example.devicesrent.data.Device;
+import com.example.devicesrent.data.category.Category;
 import com.example.devicesrent.repository.CategoryRepository;
 import com.example.devicesrent.repository.DeviceRepository;
+import com.example.devicesrent.data.category.CategoryService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,18 +16,20 @@ public class DeviceService {
     private final Scanner scanner;
     private final DeviceRepository deviceRepository;
     private final CategoryRepository categoryRepository;
+    private final CategoryService categoryService;
 
-    public DeviceService(Scanner scanner, DeviceRepository deviceRepository, CategoryRepository categoryRepository) {
+    public DeviceService(Scanner scanner, DeviceRepository deviceRepository, CategoryRepository categoryRepository, CategoryService categoryService) {
         this.scanner = scanner;
         this.deviceRepository = deviceRepository;
         this.categoryRepository = categoryRepository;
+        this.categoryService = categoryService;
     }
 
     @Transactional
     public void delete() {
         try {
-            Device deviceToRemove =  deviceToRemove = choseDevice();
-            if (deviceToRemove.getQuantity() > 1) {
+            Device deviceToRemove = deviceToRemove = choseDevice();
+            if (deviceToRemove.getQuantity() > 0) {
                 deviceToRemove.setQuantity(deviceToRemove.getQuantity() - 1);
                 deviceRepository.save(deviceToRemove);
                 System.out.println("Usunięto 1 szt. narzędzia. Pozostało " + deviceToRemove.getQuantity() + " szt.");
@@ -75,28 +77,30 @@ public class DeviceService {
         int quantity = scanner.nextInt();
         System.out.print("Cena: ");
         double price = scanner.nextDouble();
-
         Category category = choseCategory();
-
         Device device = new Device(name, description, quantity, price, category);
         deviceRepository.save(device);
         System.out.println("Dodano narzędzie: " + device);
     }
 
     private Category choseCategory() {
-        Optional<Category> category = Optional.empty();
-        while (category.isEmpty()) {
-            System.out.println("Do której kategorii przypisać narzędzie?");
-            printCategoryList();
-            try {
-                category = categoryRepository.findById(scanner.nextLong());
-            } catch (InputMismatchException e) {
-                category = Optional.empty();
-                scanner.nextLine();
-            }
+        if (categoryRepository.count() == 0) {
+            scanner.nextLine();
+            categoryService.add();
         }
-        return category.get();
-    }
+            Optional<Category> category = Optional.empty();
+            while (category.isEmpty()) {
+                System.out.println("Do której kategorii przypisać narzędzie?");
+                printCategoryList();
+                try {
+                    category = categoryRepository.findById(scanner.nextLong());
+                } catch (InputMismatchException e) {
+                    category = Optional.empty();
+                    scanner.nextLine();
+                }
+            }
+            return category.get();
+        }
 
     private void printCategoryList() {
         for (Category category : categoryRepository.findAll()) {

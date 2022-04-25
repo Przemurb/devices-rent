@@ -1,6 +1,5 @@
-package com.example.devicesrent.services;
+package com.example.devicesrent.data.category;
 
-import com.example.devicesrent.data.Category;
 import com.example.devicesrent.repository.CategoryRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,7 +45,7 @@ public class CategoryService {
     }
 
     private Category choseCategory() throws CategoryException {
-        if (categoryRepository.count() > 1) {
+        if (categoryRepository.count() > 0) {
             Optional<Category> category = Optional.empty();
             while (category.isEmpty()) {
                 System.out.println("Podaj numer kategorii do usunięcia: ");

@@ -1,5 +1,7 @@
-package com.example.devicesrent.data;
+package com.example.devicesrent.data.device;
 
+import com.example.devicesrent.data.category.Category;
+import com.example.devicesrent.data.customer.Customer;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

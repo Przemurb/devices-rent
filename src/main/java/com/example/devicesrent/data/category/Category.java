@@ -1,5 +1,6 @@
-package com.example.devicesrent.data;
+package com.example.devicesrent.data.category;
 
+import com.example.devicesrent.data.device.Device;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

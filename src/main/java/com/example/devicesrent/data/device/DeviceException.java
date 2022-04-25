@@ -1,4 +1,4 @@
-package com.example.devicesrent.services;
+package com.example.devicesrent.data.device;
 
 public class DeviceException extends Throwable {
     public DeviceException(String e) {

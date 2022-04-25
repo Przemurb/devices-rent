@@ -1,6 +1,5 @@
-package com.example.devicesrent.services;
+package com.example.devicesrent.data.customer;
 
-import com.example.devicesrent.data.Customer;
 import com.example.devicesrent.repository.CustomerRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +26,6 @@ public class CustomerService {
         String lastName = scanner.nextLine();
         System.out.print("PESEL: ");
         String pesel = scanner.nextLine();
-        scanner.nextLine();
         System.out.print("Numer Dowodu Osobistego: ");
         String documentNumber = scanner.nextLine();
         Customer customer = new Customer(firstName, lastName, pesel, documentNumber);
@@ -51,7 +49,7 @@ public class CustomerService {
     }
 
     private Customer choseCustomer() throws CustomerException {
-        if(customerRepository.count() > 1) {
+        if(customerRepository.count() > 0) {
             Optional<Customer> customer = Optional.empty();
             while (customer.isEmpty()) {
                 System.out.println("Podaj numer użytkownika do usunięcia: ");

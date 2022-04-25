@@ -7,10 +7,7 @@ import com.example.devicesrent.data.rent.RentService;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.Scanner;
+import java.util.*;
 
 @Service
 public class ApplicationController {
@@ -20,7 +17,11 @@ public class ApplicationController {
     private final CustomerService customerService;
     private final RentService rentService;
 
-    public ApplicationController(Scanner scanner, DeviceService deviceService, CategoryService categoryService, CustomerService customerService, RentService rentService) {
+    public ApplicationController(Scanner scanner,
+                                 DeviceService deviceService,
+                                 CategoryService categoryService,
+                                 CustomerService customerService,
+                                 RentService rentService) {
         this.scanner = scanner;
         this.deviceService = deviceService;
         this.categoryService = categoryService;
@@ -30,13 +31,12 @@ public class ApplicationController {
 
     public void mainLoop() {
         System.out.println("WYPOŻYCZALNIA NARZĘDZI");
-        OptionMenu option = null;
-        while (option != OptionMenu.EXIT) {
+        OptionMenu option;
+        do {
             printMenu();
             option = choseOption();
-            assert option != null;
             executeOption(option);
-        }
+        } while (option != OptionMenu.EXIT);
     }
 
     private void executeOption(OptionMenu option) {
@@ -50,7 +50,6 @@ public class ApplicationController {
             case DEL_CUSTOMER -> customerService.delete();
             case RENT_DEVICE -> rentService.rentDevice();
             case RETURN_DEVICE -> rentService.returnDevice();
-            default -> System.out.println("Nie ma takiej opcji wybory");
         }
     }
 
@@ -61,15 +60,21 @@ public class ApplicationController {
     }
 
     private OptionMenu choseOption() {
-        try {
-            OptionMenu optionMenu = OptionMenu.optionById(scanner.nextInt()).orElseThrow();
-            scanner.nextLine();
-            return optionMenu;
-        } catch (NoSuchElementException e) {
-            System.out.println("Nie ma takiej opcji wyboru.");
-            scanner.nextLine();
+        Optional<OptionMenu> optionMenu = Optional.empty();
+        while (optionMenu.isEmpty()) {
+            try{
+                optionMenu = OptionMenu.optionById(scanner.nextInt());
+                if(optionMenu.isPresent()) {
+                    return optionMenu.get();
+                } else {
+                    throw new NoSuchElementException();
+                }
+            } catch (NoSuchElementException e) {
+                scanner.nextLine();
+                System.out.println("Nie ma takiej opcji wyboru!");
+            }
         }
-        return null;
+        return optionMenu.get();
     }
 
     private void printMenu() {

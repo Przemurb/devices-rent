@@ -59,6 +59,8 @@ public class RentService {
             customer.returnDevice(device);
             device.setQuantity(device.getQuantity() + 1);
             System.out.println("Zwrócono narzędzie: " + device.getName());
+            double payment = device.getPrice();
+            System.out.println("Do zapłaty: " + payment + " zł.\n");
         } catch (CustomerException | DeviceException e) {
             System.out.println(e.getMessage());
         }

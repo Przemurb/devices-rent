@@ -21,7 +21,7 @@ public class Customer {
     private String lastName;
     private String pesel;
     private String documentNumber;
-    @ManyToMany (fetch = FetchType.EAGER)
+    @ManyToMany (mappedBy = "customers")
     private List<Device> rentDevices = new ArrayList<>();
 
     public Customer(String firstName, String lastName, String pesel, String documentNumber) {

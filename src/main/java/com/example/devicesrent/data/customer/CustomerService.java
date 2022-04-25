@@ -1,10 +1,12 @@
 package com.example.devicesrent.data.customer;
 
+import com.example.devicesrent.data.device.Device;
 import com.example.devicesrent.repository.CustomerRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
@@ -38,7 +40,8 @@ public class CustomerService {
         try {
             System.out.print("Usuwanie użytkownika");
             Customer customerToRemove = choseCustomer();
-            if (customerToRemove.getRentDevices().isEmpty()) {
+            List<Device> rentdevices = customerToRemove.getRentDevices();
+            if (rentdevices.isEmpty()) {
                 System.out.println("Usunięto użytkownika " + customerToRemove);
                 customerRepository.deleteById(customerToRemove.getId());
             } else {
@@ -64,6 +67,7 @@ public class CustomerService {
             }
             return customer.get();
         } else {
+            scanner.nextLine();
             throw new CustomerException("Baza użytkowników jest pusta!");
         }
     }

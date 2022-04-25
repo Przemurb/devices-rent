@@ -24,7 +24,7 @@ public class Device {
     private double price;
     @ManyToOne (cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private Category category;
-    @ManyToMany(mappedBy = "rentDevices", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @ManyToMany( cascade = CascadeType.PERSIST)
     private List<Customer> customers = new ArrayList<>();
 
     public Device(String name, String description, int quantity, double price, Category category) {

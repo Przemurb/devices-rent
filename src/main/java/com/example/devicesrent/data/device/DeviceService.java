@@ -30,7 +30,7 @@ public class DeviceService {
         try {
             System.out.print("Usuwanie - ");
             Device deviceToRemove = choseDevice();
-            if (deviceToRemove.getQuantity() > 0) {
+            if (deviceToRemove.getQuantity() > 1) {
                 deviceToRemove.setQuantity(deviceToRemove.getQuantity() - 1);
                 deviceRepository.save(deviceToRemove);
                 System.out.println("Usunięto 1 szt. narzędzia. Pozostało " + deviceToRemove.getQuantity() + " szt.");
@@ -74,21 +74,34 @@ public class DeviceService {
         String name = scanner.nextLine();
         System.out.print("Opis narzędzia: ");
         String description = scanner.nextLine();
-        System.out.print("Ilość narzędzi: ");
-        int quantity = scanner.nextInt();
-        System.out.print("Cena: ");
-        double price = scanner.nextDouble();
-        Category category = choseCategory();
-        Device device = new Device(name, description, quantity, price, category);
-        deviceRepository.save(device);
-        System.out.println("Dodano narzędzie: " + device);
-    }
 
-    private Category choseCategory() {
-        if (categoryRepository.count() == 0) {
-            scanner.nextLine();
-            categoryService.add();
+        boolean isCorrect = false;
+        int quantity = 0;
+        double price = 0.0;
+        while (!isCorrect) {
+            try {
+                System.out.print("Ilość narzędzi: ");
+                quantity = scanner.nextInt();
+                System.out.print("Cena: ");
+                price = scanner.nextDouble();
+                isCorrect = true;
+            } catch (InputMismatchException e) {
+                System.out.println("Błąd!");
+                scanner.nextLine();
+            }
         }
+
+            Category category = choseCategory();
+            Device device = new Device(name, description, quantity, price, category);
+            deviceRepository.save(device);
+            System.out.println("Dodano narzędzie: " + device);
+        }
+
+        private Category choseCategory () {
+            if (categoryRepository.count() == 0) {
+                scanner.nextLine();
+                categoryService.add();
+            }
             Optional<Category> category = Optional.empty();
             while (category.isEmpty()) {
                 System.out.println("Do której kategorii przypisać narzędzie?");
@@ -103,9 +116,9 @@ public class DeviceService {
             return category.get();
         }
 
-    private void printCategoryList() {
-        for (Category category : categoryRepository.findAll()) {
-            System.out.println(category.getId() + " - " + category);
+        private void printCategoryList () {
+            for (Category category : categoryRepository.findAll()) {
+                System.out.println(category.getId() + " - " + category);
+            }
         }
     }
-}

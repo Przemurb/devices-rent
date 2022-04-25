@@ -65,6 +65,7 @@ public class ApplicationController {
             try{
                 optionMenu = OptionMenu.optionById(scanner.nextInt());
                 if(optionMenu.isPresent()) {
+                    scanner.nextLine();
                     return optionMenu.get();
                 } else {
                     throw new NoSuchElementException();

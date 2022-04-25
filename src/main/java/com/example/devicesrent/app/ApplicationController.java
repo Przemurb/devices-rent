@@ -3,6 +3,7 @@ package com.example.devicesrent.app;
 import com.example.devicesrent.data.category.CategoryService;
 import com.example.devicesrent.data.customer.CustomerService;
 import com.example.devicesrent.data.device.DeviceService;
+import com.example.devicesrent.data.rent.RentService;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
@@ -17,12 +18,14 @@ public class ApplicationController {
     private final DeviceService deviceService;
     private final CategoryService categoryService;
     private final CustomerService customerService;
+    private final RentService rentService;
 
-    public ApplicationController(Scanner scanner, DeviceService deviceService, CategoryService categoryService, CustomerService customerService) {
+    public ApplicationController(Scanner scanner, DeviceService deviceService, CategoryService categoryService, CustomerService customerService, RentService rentService) {
         this.scanner = scanner;
         this.deviceService = deviceService;
         this.categoryService = categoryService;
         this.customerService = customerService;
+        this.rentService = rentService;
     }
 
     public void mainLoop() {
@@ -45,6 +48,9 @@ public class ApplicationController {
             case DEL_DEVICE -> deviceService.delete();
             case DEL_CATEGORY -> categoryService.delete();
             case DEL_CUSTOMER -> customerService.delete();
+            case RENT_DEVICE -> rentService.rentDevice();
+            case RETURN_DEVICE -> rentService.returnDevice();
+            default -> System.out.println("Nie ma takiej opcji wybory");
         }
     }
 

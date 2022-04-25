@@ -36,6 +36,7 @@ public class CustomerService {
     @Transactional
     public void delete() {
         try {
+            System.out.print("Usuwanie użytkownika");
             Customer customerToRemove = choseCustomer();
             if (customerToRemove.getRentDevices().isEmpty()) {
                 System.out.println("Usunięto użytkownika " + customerToRemove);
@@ -48,11 +49,11 @@ public class CustomerService {
         }
     }
 
-    private Customer choseCustomer() throws CustomerException {
+    public Customer choseCustomer() throws CustomerException {
         if(customerRepository.count() > 0) {
             Optional<Customer> customer = Optional.empty();
             while (customer.isEmpty()) {
-                System.out.println("Podaj numer użytkownika do usunięcia: ");
+                System.out.println("Podaj numer użytkownika: ");
                 printCustomerList();
                 try {
                     customer = customerRepository.findById(scanner.nextLong());

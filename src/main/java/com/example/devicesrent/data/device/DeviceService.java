@@ -28,7 +28,8 @@ public class DeviceService {
     @Transactional
     public void delete() {
         try {
-            Device deviceToRemove = deviceToRemove = choseDevice();
+            System.out.print("Usuwanie - ");
+            Device deviceToRemove = choseDevice();
             if (deviceToRemove.getQuantity() > 0) {
                 deviceToRemove.setQuantity(deviceToRemove.getQuantity() - 1);
                 deviceRepository.save(deviceToRemove);
@@ -42,12 +43,12 @@ public class DeviceService {
         }
     }
 
-    private Device choseDevice() throws DeviceException {
+    public Device choseDevice() throws DeviceException {
         Optional<Device> deviceToRemove = Optional.empty();
         if (deviceRepository.count() > 0) {
             while (deviceToRemove.isEmpty()) {
                 printDevicesList();
-                System.out.print("Podaj numer narzędzia do usunięcia: ");
+                System.out.print("Podaj numer narzędzia: ");
                 try {
                     deviceToRemove = deviceRepository.findById(scanner.nextLong());
                 } catch (InputMismatchException e) {

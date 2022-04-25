@@ -31,6 +31,13 @@ public class Customer {
         this.documentNumber = documentNumber;
     }
 
+    public void rentDevice (Device device) {
+        rentDevices.add(device);
+    }
+
+    public void returnDevice (Device device) {
+        rentDevices.remove(device);
+    }
     @Override
     public String toString() {
         return firstName + " " +

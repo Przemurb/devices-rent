@@ -18,7 +18,7 @@ public class Category {
     private long id;
     private String name;
     private String description;
-    @OneToMany (mappedBy = "category")
+    @OneToMany (mappedBy = "category", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private Set<Device> devices = new HashSet<>();
 
     public Category(String name, String description) {
@@ -28,9 +28,6 @@ public class Category {
 
     @Override
     public String toString() {
-        return "Category{" +
-                "name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                '}';
+        return name + " (" + description + ")";
     }
 }

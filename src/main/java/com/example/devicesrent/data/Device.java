@@ -3,7 +3,6 @@ package com.example.devicesrent.data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.engine.internal.Cascade;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -21,33 +20,29 @@ public class Device {
     private String description;
     private int quantity;
     private double price;
-    @ManyToOne (cascade = CascadeType.PERSIST)
+    @ManyToOne (cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private Category category;
-    @ManyToMany(mappedBy = "rentDevices", cascade = CascadeType.PERSIST)
-    private List<Customer>customers = new ArrayList<>();
+    @ManyToMany(mappedBy = "rentDevices", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private List<Customer> customers = new ArrayList<>();
 
-    public Device(String name, String description, int quantity, double price) {
+    public Device(String name, String description, int quantity, double price, Category category) {
         this.name = name;
         this.description = description;
         this.quantity = quantity;
         this.price = price;
+        this.category = category;
     }
 
     public void addCustomer (Customer customer) {
         customers.add(customer);
         customer.getRentDevices().add(this); //dodaje wypożyczone narzędzie do bazy!
-
     }
 
     @Override
     public String toString() {
-        return "Device{" +
-                "name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", quantity=" + quantity +
-                ", price=" + price +
-                ", category=" + category +
-                ", customers=" + customers +
-                '}';
+        return name + " (" + description +
+                ", " + quantity + " szt." +
+                ", cena " + price +
+                " zł), kategoria: " + category.getName();
     }
 }

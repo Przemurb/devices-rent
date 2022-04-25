@@ -18,12 +18,12 @@ public class Customer {
     private long id;
     private String firstName;
     private String lastName;
-    private int pesel;
+    private String pesel;
     private String documentNumber;
-    @ManyToMany
+    @ManyToMany (fetch = FetchType.EAGER)
     private List<Device> rentDevices = new ArrayList<>();
 
-    public Customer(String firstName, String lastName, int pesel, String documentNumber) {
+    public Customer(String firstName, String lastName, String pesel, String documentNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.pesel = pesel;
@@ -32,12 +32,10 @@ public class Customer {
 
     @Override
     public String toString() {
-        return "Customer{" +
-                "firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", pesel=" + pesel +
-                ", documentNumber='" + documentNumber + '\'' +
-                ", devices=" + rentDevices +
-                '}';
+        return firstName + " " +
+                lastName +
+                " (pesel: " + pesel +
+                ", dokument: " + documentNumber +
+                ")";
     }
 }

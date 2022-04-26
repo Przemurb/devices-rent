@@ -42,14 +42,17 @@ public class ApplicationController {
     private void executeOption(OptionMenu option) {
         switch (option) {
             case EXIT -> exit();
-            case ADD_DEVICE -> deviceService.add();
-            case ADD_CATEGORY -> categoryService.add();
-            case ADD_CUSTOMER -> customerService.add();
-            case DEL_DEVICE -> deviceService.delete();
-            case DEL_CATEGORY -> categoryService.delete();
-            case DEL_CUSTOMER -> customerService.delete();
+            case ADD_DEVICE -> deviceService.addNewDevice();
+            case ADD_CATEGORY -> categoryService.addNewCategory();
+            case ADD_CUSTOMER -> customerService.addNewCustomer();
+            case DEL_DEVICE -> deviceService.deleteDevice();
+            case DEL_CATEGORY -> categoryService.deleteCategory();
+            case DEL_CUSTOMER -> customerService.deleteCustomer();
             case RENT_DEVICE -> rentService.rentDevice();
             case RETURN_DEVICE -> rentService.returnDevice();
+            case FIND_CATEGORY -> categoryService.findCategory();
+            case FIND_DEVICE -> deviceService.findDevice();
+            case FIND_CUSTOMER -> customerService.findCustomerByPesel();
         }
     }
 
@@ -96,7 +99,10 @@ public class ApplicationController {
         ADD_CUSTOMER(5, "Dodaj użytkownika"),
         DEL_DEVICE(6, "Usuń narzędzie"),
         DEL_CATEGORY(7, "Usuń kategorię"),
-        DEL_CUSTOMER(8, "Usuń użytkownika");
+        DEL_CUSTOMER(8, "Usuń użytkownika"),
+        FIND_CATEGORY(9,"Wyszukaj kategorię narzędzi"),
+        FIND_DEVICE(10, "Znajdź narzędzie"),
+        FIND_CUSTOMER(11, "Znajdź użytkownika po numerze PESEL");
 
         private final int optionId;
         private final String description;

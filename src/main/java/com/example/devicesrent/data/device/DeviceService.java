@@ -1,15 +1,13 @@
 package com.example.devicesrent.data.device;
 
 import com.example.devicesrent.data.category.Category;
-import com.example.devicesrent.repository.CategoryRepository;
-import com.example.devicesrent.repository.DeviceRepository;
+import com.example.devicesrent.data.category.CategoryRepository;
 import com.example.devicesrent.data.category.CategoryService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.InputMismatchException;
-import java.util.Optional;
-import java.util.Scanner;
+import java.util.*;
+
 
 @Service
 public class DeviceService {
@@ -26,7 +24,7 @@ public class DeviceService {
     }
 
     @Transactional
-    public void delete() {
+    public void deleteDevice() {
         try {
             System.out.print("Usuwanie - ");
             Device deviceToRemove = choseDevice();
@@ -40,6 +38,17 @@ public class DeviceService {
             }
         } catch (DeviceException e) {
             System.out.println(e.getMessage());
+        }
+    }
+
+    public void findDevice() {
+        System.out.print("Podaj nazwę poszukiwanego narzędzia: ");
+        String name = scanner.nextLine();
+        List<Device> devices = deviceRepository.findDevicesByNameContainingIgnoreCase(name).orElseThrow();
+        if(devices.isEmpty()) {
+            System.out.printf("Brak narzędzi zawierających w nazwie \"%S\"\n", name);
+        } else {
+            devices.forEach(System.out::println);
         }
     }
 
@@ -69,7 +78,7 @@ public class DeviceService {
     }
 
     @Transactional
-    public void add() {
+    public void addNewDevice() {
         System.out.print("Podaj nazwę narzędzia: ");
         String name = scanner.nextLine();
         System.out.print("Opis narzędzia: ");
@@ -91,34 +100,34 @@ public class DeviceService {
             }
         }
 
-            Category category = choseCategory();
-            Device device = new Device(name, description, quantity, price, category);
-            deviceRepository.save(device);
-            System.out.println("Dodano narzędzie: " + device);
-        }
+        Category category = choseCategory();
+        Device device = new Device(name, description, quantity, price, category);
+        deviceRepository.save(device);
+        System.out.println("Dodano narzędzie: " + device);
+    }
 
-        private Category choseCategory () {
-            if (categoryRepository.count() == 0) {
+    private Category choseCategory() {
+        if (categoryRepository.count() == 0) {
+            scanner.nextLine();
+            categoryService.addNewCategory();
+        }
+        Optional<Category> category = Optional.empty();
+        while (category.isEmpty()) {
+            System.out.println("Do której kategorii przypisać narzędzie?");
+            printCategoryList();
+            try {
+                category = categoryRepository.findById(scanner.nextLong());
+            } catch (InputMismatchException e) {
+                category = Optional.empty();
                 scanner.nextLine();
-                categoryService.add();
             }
-            Optional<Category> category = Optional.empty();
-            while (category.isEmpty()) {
-                System.out.println("Do której kategorii przypisać narzędzie?");
-                printCategoryList();
-                try {
-                    category = categoryRepository.findById(scanner.nextLong());
-                } catch (InputMismatchException e) {
-                    category = Optional.empty();
-                    scanner.nextLine();
-                }
-            }
-            return category.get();
         }
+        return category.get();
+    }
 
-        private void printCategoryList () {
-            for (Category category : categoryRepository.findAll()) {
-                System.out.println(category.getId() + " - " + category);
-            }
+    private void printCategoryList() {
+        for (Category category : categoryRepository.findAll()) {
+            System.out.println(category.getId() + " - " + category);
         }
     }
+}

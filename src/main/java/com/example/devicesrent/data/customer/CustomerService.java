@@ -1,7 +1,6 @@
 package com.example.devicesrent.data.customer;
 
 import com.example.devicesrent.data.device.Device;
-import com.example.devicesrent.repository.CustomerRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,7 +20,7 @@ public class CustomerService {
     }
 
     @Transactional
-    public void add() {
+    public void addNewCustomer() {
         System.out.print("Podaj imię: ");
         String firstName = scanner.nextLine();
         System.out.print("Podaj nazwisko: ");
@@ -36,12 +35,12 @@ public class CustomerService {
     }
 
     @Transactional
-    public void delete() {
+    public void deleteCustomer() {
         try {
             System.out.print("Usuwanie użytkownika");
-            Customer customerToRemove = choseCustomer();
-            List<Device> rentdevices = customerToRemove.getRentDevices();
-            if (rentdevices.isEmpty()) {
+            Customer customerToRemove = choseCustomerById();
+            List<Device> rentDevices = customerToRemove.getRentDevices();
+            if (rentDevices.isEmpty()) {
                 System.out.println("Usunięto użytkownika " + customerToRemove);
                 customerRepository.deleteById(customerToRemove.getId());
             } else {
@@ -52,8 +51,8 @@ public class CustomerService {
         }
     }
 
-    public Customer choseCustomer() throws CustomerException {
-        if(customerRepository.count() > 0) {
+    public Customer choseCustomerById() throws CustomerException {
+        if (customerRepository.count() > 0) {
             Optional<Customer> customer = Optional.empty();
             while (customer.isEmpty()) {
                 System.out.println("Podaj numer użytkownika: ");
@@ -71,6 +70,14 @@ public class CustomerService {
             throw new CustomerException("Baza użytkowników jest pusta!");
         }
     }
+
+    public void findCustomerByPesel() {
+        System.out.println("Podaj PESEL użytkownika: ");
+        customerRepository.findByPeselIgnoreCase(scanner.nextLine())
+                .ifPresentOrElse(System.out::println,
+                        () -> System.out.println("Brak użytkownika po podanym numerze PESEL"));
+    }
+
 
     private void printCustomerList() {
         for (Customer customer : customerRepository.findAll()) {

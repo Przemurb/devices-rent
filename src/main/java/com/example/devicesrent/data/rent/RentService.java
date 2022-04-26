@@ -6,8 +6,8 @@ import com.example.devicesrent.data.customer.CustomerService;
 import com.example.devicesrent.data.device.Device;
 import com.example.devicesrent.data.device.DeviceException;
 import com.example.devicesrent.data.device.DeviceService;
-import com.example.devicesrent.repository.CustomerRepository;
-import com.example.devicesrent.repository.DeviceRepository;
+import com.example.devicesrent.data.customer.CustomerRepository;
+import com.example.devicesrent.data.device.DeviceRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,7 +35,7 @@ public class RentService {
     public void rentDevice() {
         System.out.println("WYPOŻYCZALNIA");
         try {
-            Customer customer = customerService.choseCustomer();
+            Customer customer = customerService.choseCustomerById();
             Device device = deviceService.choseDevice();
             if (device.getQuantity() > 0) {
                 customer.rentDevice(device);
@@ -54,7 +54,7 @@ public class RentService {
     public void returnDevice () {
         System.out.println("ZWROT NARZĘDZI");
         try {
-            Customer customer = customerService.choseCustomer();
+            Customer customer = customerService.choseCustomerById();
             Device device = returnDevice(customer);
             customer.returnDevice(device);
             device.setQuantity(device.getQuantity() + 1);

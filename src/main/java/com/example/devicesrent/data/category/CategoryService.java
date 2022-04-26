@@ -1,6 +1,5 @@
 package com.example.devicesrent.data.category;
 
-import com.example.devicesrent.repository.CategoryRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,7 +17,7 @@ public class CategoryService {
         this.scanner = scanner;
     }
     @Transactional
-    public void add() {
+    public void addNewCategory() {
         System.out.print("Nazwa kategorii: ");
         String name = scanner.nextLine();
         System.out.print("Opis kategorii: ");
@@ -34,7 +33,7 @@ public class CategoryService {
     }
 
     @Transactional
-    public void delete() {
+    public void deleteCategory() {
         try {
             Category categoryToRemove = choseCategory();
             System.out.println("Usunięto kategorię " + categoryToRemove.getName());
@@ -42,6 +41,14 @@ public class CategoryService {
         } catch (CategoryException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public void findCategory() {
+        System.out.print("Podaj nazwę poszukiwanej kategorii: ");
+        String name = scanner.nextLine();
+        categoryRepository.findCategoryByNameIgnoreCase(name)
+                .ifPresentOrElse(c -> System.out.println("Kategoria " + c.getName() + " istnieje i ma ID-" + c.getId()),
+                        ()-> System.out.println("Kategoria " + name + " nie istnieje."));
     }
 
     private Category choseCategory() throws CategoryException {
